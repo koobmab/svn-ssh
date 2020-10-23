@@ -2,33 +2,40 @@ FROM alpine:3.12
 
 LABEL maintainer="Maxim Solodukha <bambook@gmail.com>"
 
-RUN apk --update --no-cache add openssh-server subversion && \
-    rm -rf /var/cache/apk/*
+RUN set -x \
+    && apk --update --no-cache add \
+    openssh-server \
+    subversion \
+    && rm -rf /var/cache/apk/*
 
-RUN ssh-keygen -A
-
-RUN mkdir /svn
-
-RUN adduser --home /svn --disabled-password vcs vcs && \
-    addgroup vcs svnusers
-
-RUN chown -R vcs:vcs /svn
+RUN set -x \
+    ssh-keygen -A
 
 WORKDIR /svn
 
+RUN set -x \
+    && addgroup --gid 47001 vcs \
+    && adduser --uid 47001 --home /svn --disabled-password vcs vcs \
+    && addgroup vcs svnusers
+
+RUN set -x \
+    && chown -R vcs:vcs /svn
+
 USER vcs
 
-RUN mkdir ./.ssh && \
-    touch ./.ssh/authorized_keys
+RUN set -x \  
+    && mkdir ./.ssh \
+    && touch ./.ssh/authorized_keys
 
-RUN mkdir ./dump
-
-RUN svnadmin create ${SVN_REPO_NAME:-repo}
+RUN set -x \
+    && mkdir ./dump
 
 USER root
 
-#ssh-keygen -t rsa -b 4096 -f  /etc/ssh/ssh_host_key
+COPY docker-entrypoint.sh /
 
-EXPOSE 22
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+EXPOSE 22/tcp
 
 CMD ["/usr/sbin/sshd","-D"]
