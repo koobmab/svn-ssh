@@ -12,9 +12,9 @@ RUN mkdir /svn
 RUN adduser --home /svn --disabled-password vcs vcs && \
     addgroup vcs svnusers
 
-WORKDIR /svn
-
 RUN chown -R vcs:vcs /svn
+
+WORKDIR /svn
 
 USER vcs
 
