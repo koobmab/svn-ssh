@@ -9,14 +9,14 @@ RUN set -x \
     && rm -rf /var/cache/apk/*
 
 RUN set -x \
-    ssh-keygen -A
+    && ssh-keygen -A
 
 WORKDIR /svn
 
 RUN set -x \
-    && addgroup --gid 47001 vcs \
-    && adduser --uid 47001 --home /svn --disabled-password vcs vcs \
-    && addgroup vcs svnusers
+    && addgroup --gid 43001 vcs \
+    && adduser --uid 43001 --home /svn --disabled-password vcs \
+    && addgroup vcs vcs svnusers
 
 RUN set -x \
     && chown -R vcs:vcs /svn
