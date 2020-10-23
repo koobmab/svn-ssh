@@ -14,9 +14,9 @@ RUN set -x \
 WORKDIR /svn
 
 RUN set -x \
-    && addgroup --gid 43001 vcs \
-    && adduser --uid 43001 --home /svn --disabled-password vcs \
-    && addgroup vcs vcs svnusers
+#    && addgroup --gid 43001 vcs \
+    && adduser --uid 43001 --home /svn --disabled-password vcs vcs \
+    && addgroup vcs svnusers
 
 RUN set -x \
     && chown -R vcs:vcs /svn
