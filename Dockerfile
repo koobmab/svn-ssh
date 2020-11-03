@@ -5,34 +5,35 @@ LABEL maintainer="Maxim Solodukha <bambook@gmail.com>"
 RUN set -x \
     && apk --update --no-cache add \
     openssh-server \
-    subversion \
-    && rm -rf /var/cache/apk/*
+    openssh-sftp-server \
+    subversion
 
 RUN set -x \
-    && ssh-keygen -A
+    && ssh-keygen -A \
+    && sed -i s/^#PasswordAuthentication\ yes/PasswordAuthentication\ no/ /etc/ssh/sshd_config
 
-WORKDIR /svn
+ARG SVNDIR=/svn
 
-RUN set -x \
-#    && addgroup --gid 43001 vcs \
-    && adduser --uid 43001 --home /svn --disabled-password vcs vcs \
-    && addgroup vcs svnusers
+ARG SSHUSER=svnuser
 
-RUN set -x \
-    && chown -R vcs:vcs /svn
+ENV REPO=repo
 
-USER vcs
-
-RUN set -x \  
-    && mkdir ./.ssh \
-    && touch ./.ssh/authorized_keys
+ENV SSHUSER_PUB_KEY=""
 
 RUN set -x \
-    && mkdir ./dump
+    && addgroup --gid 43001 $SSHUSER \
+    && adduser --uid 43001 --home $SVNDIR --disabled-password -G $SSHUSER $SSHUSER \
+    && addgroup $SSHUSER svnusers \
+    && echo "$SSHUSER:`head -c 30 /dev/urandom | base64`" | chpasswd 
 
-USER root
+WORKDIR $SVNDIR
 
-COPY docker-entrypoint.sh /
+COPY authorized_keys.example ./
+
+RUN set -x \
+    && mkdir ./.ssh
+
+COPY ./docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
