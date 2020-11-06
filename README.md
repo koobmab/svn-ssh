@@ -10,7 +10,8 @@ Docker image based on Alpine Linux with subversion, openssh-server and opensftp-
 */svn*
 
 ## Environment variables
-REPO (default = repo) 
+REPO (default = repo)
+ 
 SSHUSER_PUB_KEY (required, default = N/A)
 
 ## Files
