@@ -1,3 +1,1 @@
-command="svnserve -t -r <ReposRootPath> --tunnel-user=<author>",
-         no-port-forwarding,no-agent-forwarding,no-X11-forwarding,
-         no-pty ssh-rsa <PublicKey> <Comment>
+command="svnserve -t -r <ReposRootPath> --tunnel-user=<author>",no-port-forwarding,no-agent-forwarding,no-X11-forwarding,no-pty ssh-rsa <PublicKey> <Comment>
