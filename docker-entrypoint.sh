@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ ! -d ./ssh/authorized_keys ]]; then
+if [[ ! -a ./ssh/authorized_keys ]]; then
 
 	if [[ -z "${SSHUSER_PUB_KEY}" ]]; then
 		echo "ENV VAR SSHUSER_PUB_KEY not found."
