@@ -6,7 +6,8 @@ RUN set -x \
     && apk --update --no-cache add \
     openssh-server \
     openssh-sftp-server \
-    subversion
+    subversion \
+    tzdata
 
 RUN set -x \
     && ssh-keygen -A \
@@ -19,6 +20,8 @@ ARG SSHUSER=svnuser
 ENV REPO=repo
 
 ENV SSHUSER_PUB_KEY=""
+
+ENV TZ=UTC
 
 RUN set -x \
     && addgroup --gid 43001 $SSHUSER \
