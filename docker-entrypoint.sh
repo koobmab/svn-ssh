@@ -2,6 +2,10 @@
 
 set -e
 
+if [[ ! -z "${TZ}" ]]; then
+	cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+fi
+
 if [[ ! -a ./ssh/authorized_keys ]]; then
 
 	if [[ -z "${SSHUSER_PUB_KEY}" ]]; then

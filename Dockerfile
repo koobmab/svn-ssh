@@ -7,7 +7,7 @@ RUN set -x \
     openssh-server \
     openssh-sftp-server \
     subversion \
-    tzdata
+    tzdata 
 
 RUN set -x \
     && ssh-keygen -A \
